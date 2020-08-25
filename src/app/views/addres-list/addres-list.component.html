@@ -1,0 +1,21 @@
+<mat-card class="my-3">
+  <div class="row">
+    <div class="col">
+      <span>{{ address.addressType }}</span
+      ><br />
+      <span
+        >{{ address.addressStreet }} {{ address.addressHome }}/{{
+          address.addressApartment
+        }}</span
+      ><br />
+      <span>{{ address.addressPostalCode }} {{ address.addressCity }}</span>
+    </div>
+
+    <button mat-icon-button (click)="edit.emit(index)">
+      <mat-icon>edit</mat-icon>
+    </button>
+    <button mat-icon-button (click)="removed.emit(index)">
+      <mat-icon>delete</mat-icon>
+    </button>
+  </div>
+</mat-card>

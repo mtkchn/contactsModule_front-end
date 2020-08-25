@@ -1,0 +1,10 @@
+.close-absolute {
+  position: absolute;
+  right: 24px;
+  top: 6px;
+  z-index: 10;
+}
+
+.summary-col {
+  width: 150px;
+}
