@@ -5,6 +5,7 @@ import { CommonService } from './common.service';
 import { HttpClient } from '@angular/common/http';
 import { ContactSearchValues } from '../search/SearchObjects';
 import { from, Observable } from 'rxjs';
+import { Employee } from 'src/app/models/Employee';
 
 export const CONTACT_URL_TOKEN = new InjectionToken<string>('url');
 
@@ -21,5 +22,15 @@ export class ContactService extends CommonService<any> implements ContactDAO {
 
   findContacts(contactSearchValues: ContactSearchValues): Observable<any> {
     return this.http.post<any>(this.baseUrl + '/contact', contactSearchValues);
+  }
+  deleteEmployee(id: number): Observable<any> {
+    return this.http.delete<any>(this.baseUrl + '/employee/delete/' + id);
+  }
+
+  updateEmployee(employee: Employee): Observable<any> {
+    return this.http.put<Employee>(
+      this.baseUrl + '/employee/update/',
+      employee
+    );
   }
 }

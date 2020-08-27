@@ -9,8 +9,9 @@ import {
   MAT_DIALOG_DATA,
 } from '@angular/material/dialog';
 import { AddEmployeeComponent } from 'src/app/dialog/add-employee/add-employee.component';
-import { Emploee } from 'src/app/models/Emploee';
+import { Employee } from 'src/app/models/Employee';
 import { MatTableDataSource } from '@angular/material/table';
+import { ChangeStatusComponent } from 'src/app/dialog/change-status/change-status.component';
 
 @Component({
   selector: 'app-contact',
@@ -19,6 +20,8 @@ import { MatTableDataSource } from '@angular/material/table';
 })
 export class ContactComponent implements OnInit {
   public contact: Contact;
+  contactId: Number;
+
   displayedColumns: string[] = [
     'employeeName',
     'employeeSurname',
@@ -42,22 +45,21 @@ export class ContactComponent implements OnInit {
   openDialog(): void {
     const dialogRef = this.dialog.open(AddEmployeeComponent, {
       width: '250px',
-      data: new Emploee(null, '', '', '', '', null),
+      data: new Employee(null, '', '', '', '', null),
     });
 
     dialogRef.afterClosed().subscribe((result) => {
       if (!result) {
-        // если просто закрыли окно, ничего не нажав
         return;
       }
-      this.addEmploee(result);
+      this.addEmployee(result);
     });
   }
 
-  editDialog(employee: Emploee): void {
+  editDialog(employee: Employee): void {
     const dialogRef = this.dialog.open(AddEmployeeComponent, {
       width: '250px',
-      data: new Emploee(
+      data: new Employee(
         employee.employeeId,
         employee.employeeName,
         employee.employeeSurname,
@@ -71,18 +73,46 @@ export class ContactComponent implements OnInit {
       if (!result) {
         return;
       }
+      this.updateEmployee(result);
     });
   }
 
-  addEmploee(employee: Emploee): void {
+  changeStatus(element: Employee) {
+    const dialogRef = this.dialog.open(ChangeStatusComponent, {
+      width: '250px',
+      data: element,
+    });
+
+    dialogRef.afterClosed().subscribe((result) => {
+      if (!result) {
+        return;
+      }
+      this.updateEmployee(result);
+    });
+  }
+
+  deleteContact(data: Employee) {
+    this.contactService.deleteEmployee(data.employeeId).subscribe((cat) => {
+      this.getContact(this.router.snapshot.params.id);
+    });
+  }
+
+  updateEmployee(employee: Employee): void {
+    this.contactService.updateEmployee(employee).subscribe((result) => {
+      this.getContact(this.router.snapshot.params.id);
+    });
+  }
+
+  addEmployee(employee: Employee): void {
     this.contact.company.employee.push(employee);
-    this.contactService.update(this.contact).subscribe((result) => {});
+    this.contactService.update(this.contact).subscribe((result) => {
+      this.getContact(this.router.snapshot.params.id);
+    });
   }
 
   getContact(id: number) {
     this.contactService.findById(id).subscribe((result) => {
       this.contact = result;
-      console.log(result);
       if (result.company !== null) {
         this.dataSource = result.company.employee;
       }

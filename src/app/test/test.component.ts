@@ -139,7 +139,6 @@ export class TestComponent implements OnInit {
     });
 
     if (data.company.otherLegalForm) {
-      console.log('otherLegal', data.company.otherLegalForm);
       (this.contactForm.get('company') as FormGroup).addControl(
         'otherLegalForm',
         new FormControl(data.company.otherLegalForm)
@@ -148,13 +147,10 @@ export class TestComponent implements OnInit {
   }
 
   getContact(id: number): void {
-    console.log('GETTING CONTACT...');
-
     this.contactService.findById(id).subscribe((result) => {
       this.contact = result;
       this.contactFormInit(result);
 
-      console.log('GET RESULT ::: ', this.contact);
       if (result.company === null) {
         this.personInit(result);
       } else {
@@ -166,22 +162,17 @@ export class TestComponent implements OnInit {
         );
       });
 
-      console.log('CONTACT BY ID :::', this.contact);
-
       if (result.recommender) {
-        console.log('recommender', result.recommender);
         this.contactForm.addControl(
           'recommender',
           new FormControl(result.recommender)
         );
       } else if (result.conference) {
-        console.log('conference', result.conference);
         this.contactForm.addControl(
           'conference',
           new FormControl(result.conference)
         );
       } else if (result.media) {
-        console.log('recommender', result.media);
         this.contactForm.addControl('media', new FormControl(result.media));
       }
     });
@@ -189,7 +180,6 @@ export class TestComponent implements OnInit {
 
   selectedWay(option, form): void {
     const way: string = option.value;
-    console.log('option :::: ', option);
 
     form.removeControl('inneMedia');
 

@@ -13,7 +13,7 @@ import { MatPaginator, PageEvent } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { ContactService } from 'src/app/dao/impl/contact.service';
 import { ContactSearchValues } from 'src/app/dao/search/SearchObjects';
-import { Emploee } from 'src/app/models/Emploee';
+import { Employee } from 'src/app/models/Employee';
 
 @Component({
   selector: 'app-contacts',
@@ -26,7 +26,7 @@ export class ContactsComponent implements OnInit {
   @ViewChild(MatSort, { static: true }) sort: MatSort;
   contacts: Contact[];
   displayedColumns: string[] = ['name', 'type', 'email', 'phone', 'operations'];
-  dataSource: MatTableDataSource<Emploee> = new MatTableDataSource<Emploee>();
+  dataSource: MatTableDataSource<Employee> = new MatTableDataSource<Employee>();
   totalContactsFounded: number;
   contactSearchValues = new ContactSearchValues();
   // -------------------------------------------------------------------------

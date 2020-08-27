@@ -206,8 +206,15 @@
 
             <ng-container matColumnDef="employeeStatus">
               <th mat-header-cell *matHeaderCellDef mat-sort-header>Status</th>
-              <td mat-cell *matCellDef="let element">
-                {{ element?.employeeStatus }}
+              <td
+                mat-cell
+                *matCellDef="let element"
+                (click)="changeStatus(element)"
+              >
+                <span *ngIf="element.employeeStatus === 1; else nieaktywny">
+                  aktywny</span
+                >
+                <ng-template #nieaktywny>nieaktywny</ng-template>
               </td>
             </ng-container>
 

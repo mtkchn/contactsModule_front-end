@@ -1,5 +1,5 @@
 import { Component, OnInit, Inject } from '@angular/core';
-import { Emploee } from 'src/app/models/Emploee';
+import { Employee } from 'src/app/models/Employee';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 
 @Component({
@@ -8,11 +8,11 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
   styleUrls: ['./add-employee.component.css'],
 })
 export class AddEmployeeComponent implements OnInit {
-  emploee: Emploee;
+  Employee: Employee;
 
   constructor(
     public dialogRef: MatDialogRef<AddEmployeeComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: Emploee
+    @Inject(MAT_DIALOG_DATA) public data: Employee
   ) {}
 
   ngOnInit(): void {}

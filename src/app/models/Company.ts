@@ -1,12 +1,12 @@
 import { Contact } from './Contact';
-import { Emploee } from './Emploee';
+import { Employee } from './Employee';
 
 export class Company {
   nip: number;
   regon: number;
   krs: number;
   legalForm: string;
-  employee: Emploee[];
+  employee: Employee[];
 
   constructor(nip: number, regon: number, krs: number, legalForm: string) {
     this.nip = nip;

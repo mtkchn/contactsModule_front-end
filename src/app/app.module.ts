@@ -34,6 +34,7 @@ import { MatTabsModule } from '@angular/material/tabs';
 import { EditContactComponent } from './views/edit-contact/edit-contact.component';
 import { AddEmployeeComponent } from './dialog/add-employee/add-employee.component';
 import { MatDialogModule } from '@angular/material/dialog';
+import { ChangeStatusComponent } from './dialog/change-status/change-status.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -45,6 +46,7 @@ import { MatDialogModule } from '@angular/material/dialog';
     ContactComponent,
     EditContactComponent,
     AddEmployeeComponent,
+    ChangeStatusComponent,
   ],
   imports: [
     BrowserModule,

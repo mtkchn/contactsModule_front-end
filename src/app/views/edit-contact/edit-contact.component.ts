@@ -144,7 +144,6 @@ export class EditContactComponent implements OnInit {
     });
 
     if (data.company.otherLegalForm) {
-      console.log('otherLegal', data.company.otherLegalForm);
       (this.contactForm.get('company') as FormGroup).addControl(
         'otherLegalForm',
         new FormControl(data.company.otherLegalForm)
@@ -153,13 +152,10 @@ export class EditContactComponent implements OnInit {
   }
 
   getContact(id: number): void {
-    console.log('GETTING CONTACT...');
-
     this.contactService.findById(id).subscribe((result) => {
       this.contact = result;
       this.contactFormInit(result);
 
-      console.log('GET RESULT ::: ', this.contact);
       if (result.company === null) {
         this.personInit(result);
       } else {

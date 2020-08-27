@@ -1,10 +1,10 @@
-export class Emploee {
+export class Employee {
   employeeId: number;
   employeeName: string;
   employeeSurname: string;
   employeePosition: string;
   employeePhone: string;
-  employeeStatus: boolean;
+  employeeStatus: number;
 
   constructor(
     employeeId: number,
@@ -12,7 +12,7 @@ export class Emploee {
     employeeSurname: string,
     employeePosition: string,
     employeePhone: string,
-    employeeStatus: boolean
+    employeeStatus: number
   ) {
     this.employeeId = employeeId;
     this.employeeName = employeeName;
