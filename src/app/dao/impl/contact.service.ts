@@ -24,8 +24,7 @@ export class ContactService extends CommonService<any> implements ContactDAO {
     return this.http.post<any>(this.baseUrl + '/contact', contactSearchValues);
   }
 
-  testSearch(contactSearchValues: ContactSearchValues): Observable<any> {
-    console.log('contactSearchValues', contactSearchValues);
+  searchContacts(contactSearchValues: ContactSearchValues): Observable<any> {
     return this.http.post<any>(this.baseUrl + '/search', contactSearchValues);
   }
 

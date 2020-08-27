@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Contact } from 'src/app/models/Contact';
 import { ContactService } from 'src/app/dao/impl/contact.service';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import {
   FormControl,
   FormGroup,
@@ -58,18 +58,20 @@ export class EditContactComponent implements OnInit {
 
   constructor(
     private contactService: ContactService,
-    private router: ActivatedRoute,
+    private router: Router,
+
+    private route: ActivatedRoute,
     private fb: FormBuilder
   ) {}
 
   ngOnInit(): void {
-    this.getContact(this.router.snapshot.params.id);
+    this.getContact(this.route.snapshot.params.id);
   }
 
   editContact() {
-    this.contactService
-      .update(this.contactForm.value)
-      .subscribe((result) => {});
+    this.contactService.update(this.contactForm.value).subscribe((result) => {
+      this.router.navigate(['']);
+    });
   }
   contactFormInit(data): void {
     this.contactForm = this.fb.group({
@@ -79,6 +81,7 @@ export class EditContactComponent implements OnInit {
       phone: [null],
       otherInfo: [null],
       howFind: [null],
+      type: [null],
       address: new FormArray([]),
     });
   }
@@ -112,6 +115,7 @@ export class EditContactComponent implements OnInit {
       phone: data.phone,
       otherInfo: data.otherInfo,
       howFind: data.howFind,
+      type: data.type,
       address: [],
     });
   }
@@ -140,6 +144,7 @@ export class EditContactComponent implements OnInit {
       phone: data.phone,
       otherInfo: data.otherInfo,
       howFind: data.howFind,
+      type: data.type,
       address: [],
     });
 

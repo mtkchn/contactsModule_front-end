@@ -11,10 +11,10 @@
       <span>{{ address.addressPostalCode }} {{ address.addressCity }}</span>
     </div>
 
-    <button mat-icon-button (click)="edit.emit(index)">
+    <button mat-icon-button type="button" (click)="edit.emit(index)">
       <mat-icon>edit</mat-icon>
     </button>
-    <button mat-icon-button (click)="removed.emit(index)">
+    <button mat-icon-button type="button" (click)="removed.emit(index)">
       <mat-icon>delete</mat-icon>
     </button>
   </div>

@@ -59,9 +59,8 @@ export class ContactsComponent implements OnInit {
 
   searchContacts() {
     this.contactService
-      .testSearch(this.contactSearchValues)
+      .searchContacts(this.contactSearchValues)
       .subscribe((result) => {
-        console.log('result : ', result);
         if (
           result.totalPages > 0 &&
           this.contactSearchValues.pageNumber >= result.totalPages
@@ -76,7 +75,6 @@ export class ContactsComponent implements OnInit {
   }
 
   selectedType(option) {
-    console.log;
     if (option.value === 'person') {
       this.filterType = 'person';
     } else if (option.value === 'company') {
@@ -93,7 +91,6 @@ export class ContactsComponent implements OnInit {
     this.initSearch();
   }
   initSearch() {
-    console.log('start');
     this.contactSearchValues.name = this.filterName;
     this.contactSearchValues.type = this.filterType;
     this.contactSearchValues.email = this.filterEmail;

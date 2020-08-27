@@ -51,7 +51,7 @@
       </mat-form-field>
     </div>
     <div class="col">
-      <button mat-raised-button (click)="clearSearchValues()">Wyczysc</button>
+      <button mat-raised-button (click)="clearSearchValues()">Wyczyść</button>
     </div>
 
     <button
@@ -81,6 +81,9 @@
         [routerLink]="['/contact', contact.id]"
       >
         {{ contact.name }}
+        <span *ngIf="contact.type === 'person'">
+          {{ contact.person.surname }}
+        </span>
       </td>
     </ng-container>
     <ng-container matColumnDef="type">
