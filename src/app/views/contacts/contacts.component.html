@@ -4,7 +4,56 @@
       <h1>Lista kontaktów</h1>
     </div>
   </div>
-  <div class="row justify-content-end p-3">
+  <div class="row p-3">
+    <div class="col">
+      <mat-form-field>
+        <input
+          matInput
+          placeholder="Name"
+          [(ngModel)]="filterName"
+          (keyup)="initSearch()"
+          (keydown.escape)="$event.stopPropagation(); filterName = ''"
+        />
+      </mat-form-field>
+    </div>
+    <div class="col">
+      <mat-form-field>
+        <mat-select
+          [(ngModel)]="filterType"
+          (selectionChange)="selectedType($event)"
+          placeholder="Rodzaj kontaktu"
+        >
+          <mat-option value="person">Osoba fizyczna</mat-option>
+          <mat-option value="company">Firma</mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+    <div class="col">
+      <mat-form-field>
+        <input
+          matInput
+          placeholder="email"
+          [(ngModel)]="filterEmail"
+          (keyup)="initSearch()"
+          (keydown.escape)="$event.stopPropagation(); filterEmail = ''"
+        />
+      </mat-form-field>
+    </div>
+    <div class="col">
+      <mat-form-field>
+        <input
+          matInput
+          placeholder="Telefon"
+          [(ngModel)]="filterPhone"
+          (keyup)="initSearch()"
+          (keydown.escape)="$event.stopPropagation(); filterPhone = ''"
+        />
+      </mat-form-field>
+    </div>
+    <div class="col">
+      <button mat-raised-button (click)="clearSearchValues()">Wyczysc</button>
+    </div>
+
     <button
       mat-icon-button
       color="primary"
@@ -23,7 +72,9 @@
     class="mat-elevation-z8 col-12"
   >
     <ng-container matColumnDef="name">
-      <th mat-header-cell *matHeaderCellDef mat-sort-header>Nazwa kontaktu</th>
+      <th mat-header-cell *matHeaderCellDef (click)="changedSortDirection()">
+        Nazwa kontaktu
+      </th>
       <td
         mat-cell
         *matCellDef="let contact"

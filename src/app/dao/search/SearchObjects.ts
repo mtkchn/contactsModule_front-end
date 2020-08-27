@@ -1,12 +1,13 @@
-export class CategorySearchValues {
-  title: string = null;
-}
-
 export class ContactSearchValues {
-  pageNumber = 0; // 1-я страница (значение по-умолчанию)
-  pageSize = 5; // сколько элементов на странице (значение по-умолчанию)
+  pageNumber = 0; // 1 page default
+  pageSize = 5; // number of elements on page
 
-  // // сортировка
-  // sortColumn = 'name';
-  // sortDirection = 'asc';
+  name: string = '';
+  type: string = '';
+  email: string = '';
+  phone: string = '';
+
+  // sorting
+  sortColumn = 'name';
+  sortDirection = 'desc';
 }

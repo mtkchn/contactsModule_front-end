@@ -29,6 +29,14 @@ export class ContactsComponent implements OnInit {
   dataSource: MatTableDataSource<Employee> = new MatTableDataSource<Employee>();
   totalContactsFounded: number;
   contactSearchValues = new ContactSearchValues();
+
+  filterName: string = '';
+  filterType: string = '';
+  filterEmail: string = '';
+  filterPhone: string = '';
+  filterSortColumn: string = '';
+  filterSortDirection: string = '';
+
   // -------------------------------------------------------------------------
 
   constructor(private contactService: ContactService) {}
@@ -36,7 +44,7 @@ export class ContactsComponent implements OnInit {
   ngOnInit(): void {
     this.dataSource = new MatTableDataSource();
     this.dataSource.sort = this.sort;
-    this.searchContacts(this.contactSearchValues);
+    this.searchContacts();
   }
 
   type(data) {
@@ -45,34 +53,76 @@ export class ContactsComponent implements OnInit {
 
   deleteContact(contact: Contact) {
     this.contactService.delete(contact.id).subscribe((cat) => {
-      this.searchContacts(this.contactSearchValues); // обновляем список категорий
+      this.searchContacts();
     });
   }
 
-  searchContacts(contactSearchValues: ContactSearchValues) {
-    this.contactSearchValues = contactSearchValues;
-
+  searchContacts() {
     this.contactService
-      .findContacts(this.contactSearchValues)
+      .testSearch(this.contactSearchValues)
       .subscribe((result) => {
-        this.totalContactsFounded = result.totalElements; // сколько данных показывать на странице
-        this.contacts = result.content; // массив задач
+        console.log('result : ', result);
+        if (
+          result.totalPages > 0 &&
+          this.contactSearchValues.pageNumber >= result.totalPages
+        ) {
+          this.contactSearchValues.pageNumber = 0;
+          this.searchContacts();
+        }
+        this.totalContactsFounded = result.totalElements;
+        this.contacts = result.content;
         this.dataSource.data = result.content;
       });
   }
 
-  paging(pageEvent: PageEvent): void {
-    // если изменили настройку "кол-во на странице" - заново делаем запрос и показываем с 1й страницы
-    if (this.contactSearchValues.pageSize !== pageEvent.pageSize) {
-      this.contactSearchValues.pageNumber = 0; // новые данные будем показывать с 1-й страницы (индекс 0)
+  selectedType(option) {
+    console.log;
+    if (option.value === 'person') {
+      this.filterType = 'person';
+    } else if (option.value === 'company') {
+      this.filterType = 'company';
+    }
+    this.initSearch();
+  }
+
+  clearSearchValues() {
+    this.filterName = '';
+    this.filterType = '';
+    this.filterEmail = '';
+    this.filterPhone = '';
+    this.initSearch();
+  }
+  initSearch() {
+    console.log('start');
+    this.contactSearchValues.name = this.filterName;
+    this.contactSearchValues.type = this.filterType;
+    this.contactSearchValues.email = this.filterEmail;
+    this.contactSearchValues.phone = this.filterPhone;
+
+    this.contactSearchValues.sortDirection = this.filterSortDirection;
+
+    this.searchContacts();
+  }
+
+  // изменили направление сортировки
+  changedSortDirection() {
+    if (this.filterSortDirection === 'asc') {
+      this.filterSortDirection = 'desc';
     } else {
-      // если просто перешли на другую страницу
+      this.filterSortDirection = 'asc';
+    }
+    this.initSearch();
+  }
+
+  paging(pageEvent: PageEvent): void {
+    if (this.contactSearchValues.pageSize !== pageEvent.pageSize) {
+      this.contactSearchValues.pageNumber = 0;
+    } else {
       this.contactSearchValues.pageNumber = pageEvent.pageIndex;
     }
-
     this.contactSearchValues.pageSize = pageEvent.pageSize;
     this.contactSearchValues.pageNumber = pageEvent.pageIndex;
 
-    this.searchContacts(this.contactSearchValues); // показываем новые данные
+    this.searchContacts();
   }
 }
