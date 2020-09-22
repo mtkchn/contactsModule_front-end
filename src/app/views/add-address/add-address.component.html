@@ -3,18 +3,24 @@
   <mat-form-field appearance="outline" class="col-12">
     <mat-label>Nazwa typu adresu</mat-label>
     <input type="text" matInput formControlName="addressType" />
-    <!-- <mat-error *ngIf="name.invalid">{{ getErrorMessage() }}</mat-error> -->
+    <mat-error *ngIf="address.get('addressType').invalid">{{
+      getErrorMessage("addressType")
+    }}</mat-error>
   </mat-form-field>
 
   <mat-form-field appearance="outline" class="col-6">
     <mat-label>Ulica</mat-label>
     <input type="text" matInput formControlName="addressStreet" />
-    <!-- <mat-error *ngIf="name.invalid">{{ getErrorMessage() }}</mat-error> -->
+    <mat-error *ngIf="address.get('addressStreet').invalid">{{
+      getErrorMessage("addressStreet")
+    }}</mat-error>
   </mat-form-field>
   <mat-form-field appearance="outline" class="col-3">
     <mat-label>Nr domu</mat-label>
     <input type="text" matInput formControlName="addressHome" />
-    <!-- <mat-error *ngIf="name.invalid">{{ getErrorMessage() }}</mat-error> -->
+    <mat-error *ngIf="address.get('addressHome').invalid">{{
+      getErrorMessage("addressHome")
+    }}</mat-error>
   </mat-form-field>
   <mat-form-field appearance="outline" class="col-3">
     <mat-label>Nr mieszkania</mat-label>
@@ -28,12 +34,16 @@
       matInput
       formControlName="addressPostalCode"
     />
-    <!-- <mat-error *ngIf="name.invalid">{{ getErrorMessage() }}</mat-error> -->
+    <mat-error *ngIf="address.get('addressPostalCode').invalid">{{
+      getErrorMessage("addressPostalCode")
+    }}</mat-error>
   </mat-form-field>
   <mat-form-field appearance="outline" class="col-9">
     <mat-label type="text">Miasto</mat-label>
     <input matInput formControlName="addressCity" />
-    <!-- <mat-error *ngIf="name.invalid">{{ getErrorMessage() }}</mat-error> -->
+    <mat-error *ngIf="address.get('addressCity').invalid">{{
+      getErrorMessage("addressCity")
+    }}</mat-error>
   </mat-form-field>
   <div class="col">
     <div class="row justify-content-end">
@@ -49,9 +59,7 @@
             <ng-container *ngIf="addresses.length == 0; else rr">
               Dodaj adres
             </ng-container>
-            <ng-template #rr>
-              Dodaj kolejny adres
-            </ng-template>
+            <ng-template #rr> Dodaj kolejny adres </ng-template>
           </button>
         </ng-container>
 

@@ -11,10 +11,11 @@ import {
   NgForm,
 } from '@angular/forms';
 import {
+  krsValidator,
+  nipValidator,
   peselValidator,
-  validateNip,
-  validateRegon,
-  validateKrs,
+  phoneValidator,
+  regonValidator,
 } from 'src/app/validators/validators';
 import { Person } from 'src/app/models/Person';
 import { Company } from 'src/app/models/Company';
@@ -76,9 +77,12 @@ export class EditContactComponent implements OnInit {
   contactFormInit(data): void {
     this.contactForm = this.fb.group({
       id: [null],
-      name: [null, [(Validators.required, Validators.pattern('[a-zA-Z ]*'))]],
-      email: [null],
-      phone: [null],
+      name: [
+        null,
+        [Validators.required, Validators.pattern('[a-zA-ZąćęłńóśźżĄĘŁŃÓŚŹŻ]*')],
+      ],
+      email: [null, [Validators.required, Validators.email]],
+      phone: [null, [Validators.required, phoneValidator]],
       otherInfo: [null],
       howFind: [null],
       type: [null],
@@ -99,8 +103,14 @@ export class EditContactComponent implements OnInit {
     this.contactForm.addControl(
       'person',
       this.fb.group({
-        surname: [data.person.surname, [Validators.required]],
-        pesel: [data.person.pesel, [Validators.required]],
+        surname: [
+          null,
+          [
+            Validators.required,
+            Validators.pattern('[a-zA-ZąćęłńóśźżĄĘŁŃÓŚŹŻ]*'),
+          ],
+        ],
+        pesel: [null, [Validators.required, peselValidator]],
       })
     );
 
@@ -124,10 +134,10 @@ export class EditContactComponent implements OnInit {
     this.contactForm.addControl(
       'company',
       this.fb.group({
-        nip: [null, [Validators.required]],
-        regon: [null, [Validators.required]],
-        krs: [null, [Validators.required]],
-        legalForm: [null],
+        nip: [null, [Validators.required, nipValidator]],
+        regon: [null, [Validators.required, regonValidator]],
+        krs: [null, [Validators.required, krsValidator]],
+        legalForm: [null, [Validators.required]],
       })
     );
 
@@ -218,6 +228,35 @@ export class EditContactComponent implements OnInit {
       case 'media':
         form.addControl('media', new FormControl());
         break;
+    }
+  }
+  getErrorMessage(errorField: string) {
+    if (this.contactForm.get(errorField).hasError('required')) {
+      return 'Pole nie może być puste';
+    }
+
+    if (this.contactForm.get(errorField).hasError('peselError')) {
+      return 'Niepoprawny nr. pesel';
+    }
+
+    if (this.contactForm.get(errorField).hasError('email')) {
+      return 'Niepoprawny adres email';
+    }
+
+    if (this.contactForm.get(errorField).hasError('phoneError')) {
+      return 'Niepoprawny nr. telefonu';
+    }
+
+    if (this.contactForm.get(errorField).hasError('regonError')) {
+      return 'Niepoprawny nr. regon';
+    }
+
+    if (this.contactForm.get(errorField).hasError('nipError')) {
+      return 'Niepoprawny nr. nip';
+    }
+
+    if (this.contactForm.get(errorField).hasError('krsError')) {
+      return 'Niepoprawny nr. krs';
     }
   }
 

@@ -6,34 +6,34 @@ export function peselValidator(control: FormControl): null | ValidationErrors {
   let sum = 0;
   let isValid: boolean;
   let dateValid: boolean;
-
   if (!hasNumber) {
-    return { peselValid: 'niepoprawny pesel' };
+    return { peselError: true };
   }
   if (
-    parseInt(control.value.substring(4, 6)) > 31 ||
-    parseInt(control.value.substring(2, 4)) > 12
+    parseInt(control.value.toString().substring(4, 6)) > 31 ||
+    parseInt(control.value.toString().substring(2, 4)) > 12
   ) {
     dateValid = false;
   } else {
     dateValid = true;
   }
 
-  let controlNumber = parseInt(control.value.substring(10, 11));
+  let controlNumber = parseInt(control.value.toString().substring(10, 11));
   for (let i = 0; i < weight.length; i++) {
-    sum += parseInt(control.value.substring(i, i + 1)) * weight[i];
+    sum += parseInt(control.value.toString().substring(i, i + 1)) * weight[i];
   }
   sum = sum % 10;
   isValid = (10 - sum) % 10 === controlNumber;
 
   const peselValid = hasNumber && dateValid && isValid;
+
   if (!peselValid) {
-    return { peselValid: 'niepoprawny pesel' };
+    return { peselError: true };
   }
   return null;
 }
 
-export function validateRegon(control: FormControl): null | ValidationErrors {
+export function regonValidator(control: FormControl): null | ValidationErrors {
   if (!control.value) return null;
   const regon: string = control.value;
 
@@ -63,9 +63,9 @@ export function validateRegon(control: FormControl): null | ValidationErrors {
   return null;
 }
 
-export function validateNip(control: FormControl): null | ValidationErrors {
+export function nipValidator(control: FormControl): null | ValidationErrors {
   if (!control.value) return null;
-  const nip: string = control.value.replace(/[\ \-]/gi, '');
+  const nip: string = control.value.toString().replace(/[\ \-]/gi, '');
 
   const isOnlyDigit: boolean = /^\d+$/.test(nip);
   if (nip.length !== 10 || !isOnlyDigit) return { nipError: true };
@@ -84,11 +84,19 @@ export function validateNip(control: FormControl): null | ValidationErrors {
   return null;
 }
 
-export function validateKrs(control: FormControl): null | ValidationErrors {
+export function krsValidator(control: FormControl): null | ValidationErrors {
   if (!control.value) return null;
   const krs: string = control.value;
 
   const isOnlyDigit: boolean = /^\d+$/.test(krs);
   if (!isOnlyDigit) return { krsError: true };
+  return null;
+}
+
+export function phoneValidator(control: FormControl): null | ValidationErrors {
+  const hasNumber = /^(\+48)?\d{9}$/.test(control.value);
+  if (!hasNumber) {
+    return { phoneError: true };
+  }
   return null;
 }

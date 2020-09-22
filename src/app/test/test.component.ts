@@ -11,9 +11,9 @@ import {
 } from '@angular/forms';
 import {
   peselValidator,
-  validateNip,
-  validateRegon,
-  validateKrs,
+  nipValidator,
+  regonValidator,
+  krsValidator,
 } from 'src/app/validators/validators';
 import { Person } from 'src/app/models/Person';
 import { Company } from 'src/app/models/Company';

@@ -15,9 +15,10 @@ import { Person } from 'src/app/models/Person';
 import { Company } from 'src/app/models/Company';
 import {
   peselValidator,
-  validateRegon,
-  validateNip,
-  validateKrs,
+  regonValidator,
+  nipValidator,
+  krsValidator,
+  phoneValidator,
 } from '../../validators/validators';
 import { Router } from '@angular/router';
 
@@ -80,14 +81,22 @@ export class AddContactComponent implements OnInit {
 
   personFormInit(): void {
     this.newPerson = this.fb.group({
-      name: [null, [Validators.required]],
+      name: [
+        null,
+        [Validators.required, Validators.pattern('[a-zA-ZąćęłńóśźżĄĘŁŃÓŚŹŻ]*')],
+      ],
       person: this.fb.group({
-        surname: [null, [Validators.required]],
-
+        surname: [
+          null,
+          [
+            Validators.required,
+            Validators.pattern('[a-zA-ZąćęłńóśźżĄĘŁŃÓŚŹŻ]*'),
+          ],
+        ],
         pesel: [null, [Validators.required, peselValidator]],
       }),
-      email: [null],
-      phone: [null, Validators.maxLength(12)],
+      email: [null, [Validators.required, Validators.email]],
+      phone: [null, [Validators.required, phoneValidator]],
       otherInfo: [null],
       howFind: [null],
       type: ['person'],
@@ -97,15 +106,21 @@ export class AddContactComponent implements OnInit {
 
   companyFormInit(): void {
     this.newCompany = this.fb.group({
-      name: [null],
+      name: [
+        null,
+        [
+          Validators.required,
+          Validators.pattern('[a-zA-ZąćęłńóśźżĄĘŁŃÓŚŹŻ0-9 ]*'),
+        ],
+      ],
       company: this.fb.group({
-        nip: [null, [Validators.required, validateNip]],
-        regon: [null, [Validators.required, validateRegon]],
-        krs: [null, [Validators.required, validateKrs]],
-        legalForm: [null],
+        nip: [null, [Validators.required, nipValidator]],
+        regon: [null, [Validators.required, regonValidator]],
+        krs: [null, [Validators.required, krsValidator]],
+        legalForm: [null, [Validators.required]],
       }),
-      email: [null],
-      phone: [null],
+      email: [null, [Validators.required, Validators.email]],
+      phone: [null, [Validators.required, phoneValidator]],
       otherInfo: [null],
       howFind: [null],
       type: ['company'],
@@ -117,7 +132,10 @@ export class AddContactComponent implements OnInit {
   selectedLegalForm(option, form): void {
     const legalForm: string = option.value;
     if (legalForm === 'inne') {
-      form.addControl('otherLegalForm', new FormControl());
+      form.addControl(
+        'otherLegalForm',
+        new FormControl(null, Validators.required)
+      );
     } else if (form.controls.hasOwnProperty('otherLegalForm')) {
       form.removeControl('otherLegalForm');
     }
@@ -168,15 +186,36 @@ export class AddContactComponent implements OnInit {
     });
   }
 
-  getErrorMessage() {
-    if (this.newPerson.get('surname').hasError('required')) {
-      return 'Wpisz nazwisko';
+  getErrorMessage(errorField: string) {
+    if (this.typeControll().get(errorField).hasError('required')) {
+      return 'Pole nie może być puste';
     }
 
-    if (this.newPerson.get('surname').hasError('pattern')) {
-      return 'To nazwisko zawiera niedozwolone znaki';
+    if (this.typeControll().get(errorField).hasError('peselError')) {
+      return 'Niepoprawny nr. pesel';
+    }
+
+    if (this.typeControll().get(errorField).hasError('email')) {
+      return 'Niepoprawny adres email';
+    }
+
+    if (this.typeControll().get(errorField).hasError('phoneError')) {
+      return 'Niepoprawny nr. telefonu';
+    }
+
+    if (this.typeControll().get(errorField).hasError('regonError')) {
+      return 'Niepoprawny nr. regon';
+    }
+
+    if (this.typeControll().get(errorField).hasError('nipError')) {
+      return 'Niepoprawny nr. nip';
+    }
+
+    if (this.typeControll().get(errorField).hasError('krsError')) {
+      return 'Niepoprawny nr. krs';
     }
   }
+
   ngOnInit() {
     this.personFormInit();
     this.companyFormInit();

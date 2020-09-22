@@ -35,132 +35,146 @@
         <h3 class="col-12 mx-3">Dane ogólne</h3>
 
         <!-------------------------------------------------------------------------------------------------->
-        <!-- forma dla osoby fizycznej -->
+        <!-- inputy dla osoby fizycznej -->
         <div>
           <div class="col">
             <div *ngIf="contactType; else company">
               <mat-form-field appearance="outline" class="col-12">
                 <mat-label>Imię</mat-label>
                 <input type="text" matInput formControlName="name" />
-                <!-- <mat-error *ngIf="name.invalid">{{ getErrorMessage() }}</mat-error> -->
+                <mat-error *ngIf="typeControll().get('name').invalid">{{
+                  getErrorMessage("name")
+                }}</mat-error>
               </mat-form-field>
+
               <div formGroupName="person">
                 <mat-form-field appearance="outline" class="col-12">
                   <mat-label>Nazwisko</mat-label>
                   <input type="text" matInput formControlName="surname" />
-                  <!-- <mat-error *ngIf="this.newPerson.get('surname').invalid">{{
-                      getErrorMessage()
-                    }}</mat-error> -->
+                  <mat-error *ngIf="newPerson.get('person.surname').invalid">{{
+                    getErrorMessage("person.surname")
+                  }}</mat-error>
                 </mat-form-field>
                 <mat-form-field appearance="outline" class="col-12">
                   <mat-label>PESEL</mat-label>
                   <input matInput formControlName="pesel" />
-                  <!-- <mat-error *ngIf="name.invalid">{{ getErrorMessage() }}</mat-error> -->
+                  <mat-error *ngIf="newPerson.get('person.pesel').invalid">{{
+                    getErrorMessage("person.pesel")
+                  }}</mat-error>
                 </mat-form-field>
               </div>
             </div>
 
+            <!-------------------------------------------------------------------------------------------------->
+            <!-- inputy dla firmy -->
+            <ng-template #company>
+              <div>
+                <mat-form-field appearance="outline" class="col-12">
+                  <mat-label>Nazwa firmy</mat-label>
+                  <input type="text" matInput formControlName="name" />
+                  <mat-error *ngIf="typeControll().get('name').invalid">{{
+                    getErrorMessage("name")
+                  }}</mat-error>
+                </mat-form-field>
+                <div formGroupName="company">
+                  <mat-form-field appearance="outline" class="col-12">
+                    <mat-label>NIP</mat-label>
+                    <input matInput formControlName="nip" />
+                    <mat-error
+                      *ngIf="typeControll().get('company.nip').invalid"
+                      >{{ getErrorMessage("company.nip") }}</mat-error
+                    >
+                  </mat-form-field>
+
+                  <mat-form-field appearance="outline" class="col-12">
+                    <mat-label>Regon</mat-label>
+                    <input matInput formControlName="regon" />
+                    <mat-error
+                      *ngIf="typeControll().get('company.regon').invalid"
+                      >{{ getErrorMessage("company.regon") }}</mat-error
+                    >
+                  </mat-form-field>
+
+                  <mat-form-field appearance="outline" class="col-12">
+                    <mat-label>KRS</mat-label>
+                    <input matInput formControlName="krs" />
+                    <mat-error
+                      *ngIf="typeControll().get('company.krs').invalid"
+                      >{{ getErrorMessage("company.krs") }}</mat-error
+                    >
+                  </mat-form-field>
+
+                  <!-------------------------------------------------------------------------------------------------->
+                  <!-- select forma prawna + input "inna forma prawna" -->
+                  <div class="col-12">
+                    <div class="row">
+                      <mat-form-field appearance="outline" class="col-6">
+                        <mat-label>Forma prawna</mat-label>
+                        <mat-select
+                          formControlName="legalForm"
+                          (selectionChange)="
+                            selectedLegalForm(
+                              $event,
+                              this.typeControll().get('company')
+                            )
+                          "
+                        >
+                          <mat-option
+                            *ngFor="let legalForm of legalForm"
+                            [value]="legalForm.value"
+                          >
+                            {{ legalForm.viewValue }}
+                            <br />
+                          </mat-option>
+                        </mat-select>
+                      </mat-form-field>
+
+                      <mat-form-field
+                        *ngIf="
+                          this.typeControll()
+                            .get('company')
+                            .controls.hasOwnProperty('otherLegalForm')
+                        "
+                        appearance="outline"
+                        class="col-6"
+                      >
+                        <mat-label>Inna forma prawna</mat-label>
+                        <input matInput formControlName="otherLegalForm" />
+                      </mat-form-field>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </ng-template>
+
             <mat-form-field appearance="outline" class="col-12">
               <mat-label>Enter your email</mat-label>
               <input type="email" matInput formControlName="email" />
-              <!-- <mat-error *ngIf="name.invalid">{{ getErrorMessage() }}</mat-error> -->
+              <mat-error *ngIf="typeControll().get('email').invalid">{{
+                getErrorMessage("email")
+              }}</mat-error>
             </mat-form-field>
 
             <mat-form-field appearance="outline" class="col-12">
               <mat-label>Enter your phone</mat-label>
               <input type="tel" matInput formControlName="phone" />
-              <!-- <mat-error *ngIf="name.invalid">{{ getErrorMessage() }}</mat-error> -->
+              <mat-error *ngIf="typeControll().get('phone').invalid">{{
+                getErrorMessage("phone")
+              }}</mat-error>
             </mat-form-field>
 
             <mat-form-field appearance="outline" class="col-12">
               <mat-label>Enter your otherInfo</mat-label>
               <input type="text" matInput formControlName="otherInfo" />
-              <!-- <mat-error *ngIf="name.invalid">{{ getErrorMessage() }}</mat-error> -->
             </mat-form-field>
           </div>
         </div>
-
-        <!-------------------------------------------------------------------------------------------------->
-        <!-- forma dla firmy -->
-        <ng-template #company>
-          <div>
-            <mat-form-field appearance="outline" class="col-12">
-              <mat-label>Nazwa firmy</mat-label>
-              <input type="text" matInput formControlName="name" />
-              <!-- <mat-error *ngIf="name.invalid">{{ getErrorMessage() }}</mat-error> -->
-            </mat-form-field>
-            <div formGroupName="company">
-              <mat-form-field appearance="outline" class="col-12">
-                <mat-label>NIP</mat-label>
-                <input matInput formControlName="nip" />
-                <!-- <mat-error *ngIf="name.invalid">{{ getErrorMessage() }}</mat-error> -->
-              </mat-form-field>
-
-              <mat-form-field appearance="outline" class="col-12">
-                <mat-label>Regon</mat-label>
-                <input matInput formControlName="regon" />
-                <!-- <mat-error *ngIf="name.invalid">{{ getErrorMessage() }}</mat-error> -->
-              </mat-form-field>
-
-              <mat-form-field appearance="outline" class="col-12">
-                <mat-label>KRS</mat-label>
-                <input matInput formControlName="krs" />
-                <!-- <mat-error *ngIf="name.invalid">{{ getErrorMessage() }}</mat-error> -->
-              </mat-form-field>
-
-              <!-------------------------------------------------------------------------------------------------->
-              <!-- select forma prawna + input "inna forma prawna" -->
-              <div class="col-12">
-                <div class="row">
-                  <mat-form-field appearance="outline" class="col-6">
-                    <mat-label>Forma prawna</mat-label>
-                    <mat-select
-                      formControlName="legalForm"
-                      (selectionChange)="
-                        selectedLegalForm(
-                          $event,
-                          this.typeControll().get('company')
-                        )
-                      "
-                    >
-                      <mat-option
-                        *ngFor="let legalForm of legalForm"
-                        [value]="legalForm.value"
-                      >
-                        {{ legalForm.viewValue }}
-                        <br />
-                      </mat-option>
-                    </mat-select>
-                  </mat-form-field>
-
-                  <mat-form-field
-                    *ngIf="
-                      this.typeControll()
-                        .get('company')
-                        .controls.hasOwnProperty('otherLegalForm')
-                    "
-                    appearance="outline"
-                    class="col-6"
-                  >
-                    <mat-label>Inna forma prawna</mat-label>
-                    <input matInput formControlName="otherLegalForm" />
-                    <!-- <mat-error *ngIf="name.invalid">{{ getErrorMessage() }}</mat-error> -->
-                  </mat-form-field>
-                </div>
-              </div>
-            </div>
-          </div>
-        </ng-template>
       </div>
 
       <div class="col">
         <app-add-address
           [addresses]="typeControll().get('address')"
         ></app-add-address>
-        <!-- <div class="col">
-            <app-addres-list  *ngFor="let item of typeControll().get('address'); index as i"  [index]="i" [item]="item"  (removed)="typeControll().get('address').removeAt($event)"></app-addres-list>
-
-           </div> -->
       </div>
     </div>
 

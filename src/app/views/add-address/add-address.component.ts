@@ -45,15 +45,33 @@ export class AddAddressComponent implements OnInit {
     this.address = this.fb.group({
       addressType: [
         null,
-        [Validators.required, Validators.pattern('[a-zA-Z ]*')],
+        [
+          Validators.required,
+          Validators.pattern('[a-zA-ZąćęłńóśźżĄĘŁŃÓŚŹŻ0-9 ]*'),
+        ],
       ],
-      addressStreet: [null, [Validators.required]],
-      addressHome: [null, [Validators.required]],
+      addressStreet: [
+        null,
+        [
+          Validators.required,
+          Validators.pattern('[a-zA-ZąćęłńóśźżĄĘŁŃÓŚŹŻ0-9 ]*'),
+        ],
+      ],
+      addressHome: [
+        null,
+        [
+          Validators.required,
+          Validators.pattern('[a-zA-ZąćęłńóśźżĄĘŁŃÓŚŹŻ0-9 ]*'),
+        ],
+      ],
       addressApartment: [null],
       addressPostalCode: [null, [Validators.required]],
       addressCity: [
         null,
-        [Validators.required, Validators.pattern('[a-zA-Z ]*')],
+        [
+          Validators.required,
+          Validators.pattern('[a-zA-ZąćęłńóśźżĄĘŁŃÓŚŹŻ0-9 ]*'),
+        ],
       ],
     });
   }
@@ -69,5 +87,11 @@ export class AddAddressComponent implements OnInit {
       addressPostalCode: this.addresses.value[event].addressPostalCode,
       addressCity: this.addresses.value[event].addressCity,
     });
+  }
+
+  getErrorMessage(errorField: string) {
+    if (this.address.get(errorField).hasError('required')) {
+      return 'Pole nie może być puste';
+    }
   }
 }
