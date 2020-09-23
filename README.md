@@ -4,7 +4,7 @@ This project was generated with [Angular CLI](https://github.com/angular/angular
 
 ## Demo
 
-  You can watch the demo https://mtkchn.github.io/angular-shop/
+  You can watch the demo https://mtkchn.github.io/contactsModule_front-end/
 
 ## Development server
 
